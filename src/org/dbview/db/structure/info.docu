@@ -1,0 +1,23 @@
+/**
+ * @package org.dbtools.db.structure
+ * This package contains the internal representation of a database.
+ *
+ * <p>Nomenclature:</p>
+ * <ul>
+ *     <li>"Relation" vers "join":
+ *         <ul>
+ *              <li>A relation is a (global) link between two tables : a "dependent" table and a "reference" table.</li>
+ *              <li>A join is a link between two tables' fields. A join is always associated to a (soft or hard) foreign key.</li>
+ *         </ul>
+ *         Please note that a relation includes one or more joins.
+ *     </li>
+ *     <li>"Dependent" versus "reference" table: These notions are relative to <i>joins</i>.
+ *         A join links a field to another field.
+ *         In the database, a link between <b>two fields</b> is declared by a (soft or hard) foreign key.
+ *		   <ul>
+ *         		<li>The field declared as a foreign key belongs to the "dependent" table.</li>
+ *         		<li>The other field belongs to the "reference" table.</li>
+ *         </ul>
+ *     </li>
+ * </ul>
+ */

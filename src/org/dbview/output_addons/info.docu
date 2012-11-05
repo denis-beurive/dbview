@@ -1,0 +1,4 @@
+/**
+ * @package org.dbtools.output_addons
+ * This package contains tools for add-ons that produce representations from loaded data source.
+ */

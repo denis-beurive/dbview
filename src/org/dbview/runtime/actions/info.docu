@@ -1,0 +1,4 @@
+/**
+ * @package org.dbtools.runtime.actions
+ * This package implements all procedures required by the command line configuration.
+ */

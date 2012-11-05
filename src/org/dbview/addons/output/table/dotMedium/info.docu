@@ -1,0 +1,7 @@
+
+/**
+ * @package org.dbtools.addons.output.dotMedium
+ * This package represents the add-on that generates a medium DOT (GraphViz) representation.
+ * It contains all the adaptors that define this add-on.
+ * @see http://www.graphviz.org/
+ */

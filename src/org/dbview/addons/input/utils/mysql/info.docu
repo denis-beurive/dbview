@@ -1,0 +1,7 @@
+
+/**
+ * @package org.dbtools.addons.input.utils.mysql
+ * This package regroups some utility classes used by the MySql add-on only.
+ *
+ * @note These classes could have been placed in the package that represents the MySql add-on. But, by conventions, the add-on packages only contain adaptor classes.
+ */

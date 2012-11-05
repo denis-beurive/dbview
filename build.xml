@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="mysql-graphviz" basedir="." default="all">
+
+	<!-- List of pathes. -->
+	<property name="dir.src"		value="src"/>
+	<property name="dir.class"		value="bin"/>
+	<property name="dir.runtime"	value="runtime"/>
+	<property name="dir.jar"		value="lib"/>
+	<property name="dir.conf"		value="conf"/>
+
+	<!-- list of packages                                           -->
+	<!-- WARNING: The following values are linked to the JAVA code. -->
+	<!--          See class AddOnCatalog                            -->
+	<!--          See class SoftKeyDetectorCatalog                  -->
+	<!-- Search for __BUILD_CONF__                                  -->
+	<property name="dir.pkg.tests"					value="tests"/>
+	<property name="dir.pkg.fk"						value="org/dbview/resources/softforeignkeydetectors"/>
+	<property name="dir.pkg.input.addons"			value="org/dbview/addons/input"/>
+	<property name="dir.pkg.output.table.addons"	value="org/dbview/addons/output/table"/>
+
+	<!-- Jars' name -->
+	<property name="name.jar.main"	value="dbview.jar"/>
+	<property name="name.jar.junit"	value="junit.jar"/>
+
+	<!-- ############################################################################## -->
+	<!-- Load confguration file                                                         -->
+	<!-- This file contains the following values :                                      -->
+	<!--     o The name of the JAR file used to store the foreign key matchers.         -->
+	<!--     o The name of the JAR file used to store the input adapters.               -->
+	<!--     o The name of the JAR file used to store the output adapters.              -->
+	<!-- ############################################################################## -->
+
+	<loadproperties srcfile="${dir.conf}/resources.properties">
+		<filterchain>
+		    <deletecharacters chars="\t"/>
+		    <trim/>
+			<ignoreblank/>
+		</filterchain>
+	</loadproperties>
+
+	<!-- ############################################################################## -->
+	<!-- CLASSPATH                                                                      -->
+	<!-- ############################################################################## -->
+
+	<!-- CLASSPATH -->
+	<path id="classpath">
+		<!--  Main JAR -->
+		<pathelement location="${dir.jar}/${name.jar.main}"/>
+
+		<!-- Extensions (JAR names extracted from the configuration file) -->
+		<!-- __CONFPROP__ -->
+		<pathelement location="${extentionsRepositoryDirName}/${sotfForeignKeyDetectors}"/>
+		<pathelement location="${extentionsRepositoryDirName}/${inputAddons}"/>
+		<pathelement location="${extentionsRepositoryDirName}/${outputTableAddons}"/>
+
+		<!-- For the repositories (profiles,...) -->
+		<pathelement location="${repositoriesDirName}"/>
+
+		<!-- For JARs exploration, and for directories location -->
+		<pathelement location="${extentionsRepositoryDirName}"/>
+		<pathelement location="."/>
+
+		<!-- For the configuration file -->
+		<pathelement location="${dir.conf}/"/>
+
+		<!-- External tools -->
+		<pathelement location="${dir.jar}/jdom-1.1.2.jar"/>
+		<pathelement location="${dir.jar}/junit-4.10.jar"/>
+		<pathelement location="${dir.jar}/jgrapht-jdk1.6.jar"/>
+		<pathelement location="${dir.jar}/mysql-connector-java-5.1.18-bin.jar"/>
+		
+		<!-- <pathelement location="${dir.jar}/jargs.jar"/> -->
+		<pathelement location="${dir.jar}/jaxen-1.1.3.jar"/>
+		<pathelement location="${dir.jar}/args4j-2.0.19.jar"/>
+	</path>
+
+	<!-- Debug: Print the CLASSPATH.  -->
+	<target name="show-classpath">
+		<property name="myclasspath" refid="classpath"/>
+		<echo message="Classpath = ${myclasspath}"/>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- List of sources to compile and archive for the main JAR                        -->
+	<!--  Exclusions:                                                                   -->
+    <!--        o JUNIT test source files.                                              -->
+    <!--        o Foreign key patterns.                                                 -->
+    <!--        o The input adaptors.                                                   -->
+	<!--        o The output adaptors.                                                  -->
+	<!-- ############################################################################## -->
+
+	<!-- Compile -->
+	<patternset id="src.dbview">
+		<include name="**/*.java"/>
+		<exclude name="${dir.pkg.tests}/*"/>
+		<exclude name="${dir.pkg.fk}/*"/>
+		<exclude name="${dir.pkg.input.addons}/**/*.java"/>
+	</patternset>
+
+	<!-- Archive -->
+	<fileset id="class.dbview" dir="${dir.class}" casesensitive="yes">
+		<include name="**/*.class"/>
+		<exclude name="${dir.pkg.tests}/*"/>
+		<exclude name="${dir.pkg.fk}/*"/>
+		<exclude name="${dir.pkg.input.addons}/**/*.class"/>
+		<exclude name="${dir.pkg.output.table.addons}/**/*.class"/>
+	</fileset>
+
+	<!-- Debug -->
+	<target name="show-class-dbview" depends="dbview">
+		<echo message="${toString:class.dbview}" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- List of sources to compile and archive for the Junit JAR                       -->
+	<!-- ############################################################################## -->
+
+	<!-- Compile -->
+	<patternset id="src.tests">
+		<include name="${dir.pkg.tests}/*.java"/>
+	</patternset>
+
+	<!-- Archive -->
+	<fileset id="class.tests" dir="${dir.class}" casesensitive="yes">
+		<include name="${dir.pkg.tests}/*"/>
+	</fileset>
+
+	<!-- Debug -->
+	<target name="show-class-test" depends="test">
+		<echo message="Package directory" />
+		<echo message="${toString:dir.pkg.tests}" />
+		<echo message="Files list" />
+		<echo message="${toString:class.tests}" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- List of sources to compile and archive for the foreign key pattern marchers    -->
+	<!-- ############################################################################## -->
+
+	<!-- Compile -->
+	<patternset id="src.fk">
+		<include name="${dir.pkg.fk}/*.java"/>
+	</patternset>
+
+	<!-- Archive -->
+	<fileset id="class.fk" dir="${dir.class}" casesensitive="yes">
+		<include name="${dir.pkg.fk}/*"/>
+	</fileset>
+
+	<!-- Debug -->
+	<target name="show-class-fk" depends="fk">
+		<echo message="Package directory" />
+		<echo message="${toString:dir.pkg.fk}" />
+		<echo message="Files list" />
+		<echo message="${toString:class.fk}" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- List of sources to compile and archive for the input adaptors                  -->
+	<!-- ############################################################################## -->
+
+	<!-- Compile -->
+	<patternset id="src.input.adaptor">
+		<include name="${dir.pkg.input.addons}/**/*.java"/>
+	</patternset>
+
+	<!-- Archive -->
+	<fileset id="class.input.adaptor" dir="${dir.class}" casesensitive="yes">
+		<include name="${dir.pkg.input.addons}/**/*.class"/>
+	</fileset>
+
+	<!-- Debug -->
+	<target name="show-class-input-adaptor" depends="fk">
+		<echo message="Package directory" />
+		<echo message="${toString:dir.pkg.input.addons}" />
+		<echo message="Files list" />
+		<echo message="${toString:class.input.adaptor}" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- List of sources to compile and archive for the output table adaptors           -->
+	<!-- ############################################################################## -->
+
+	<!-- Compile -->
+	<patternset id="src.output.adaptor">
+		<include name="${dir.pkg.output.table.addons}/**/*.java"/>
+	</patternset>
+
+	<!-- Archive -->
+	<fileset id="class.output.adaptor" dir="${dir.class}" casesensitive="yes">
+		<include name="${dir.pkg.output.table.addons}/**/*.class"/>
+	</fileset>
+
+	<!-- Debug -->
+	<target name="show-class-output-adaptor" depends="fk">
+		<echo message="Package directory" />
+		<echo message="${toString:dir.pkg.output.table.addons}" />
+		<echo message="Files list" />
+		<echo message="${toString:class.output.adaptor}" />
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- Generic rules                                                                  -->
+	<!-- ############################################################################## -->
+
+	<!-- Tasks that must be done before all compilation. -->
+	<target name="build">
+		<mkdir dir="${dir.runtime}"/>
+		<mkdir dir="${dir.class}"/>
+		<mkdir dir="${repositoriesDirName}"/>
+	</target>
+
+	<!-- Build all. -->
+	<target name="all" depends="test">
+	</target>
+
+	<!-- Build documentation. -->
+	<target name="doc">
+		<apply executable="doxygen" addsourcefile="true">
+			<fileset file="Doxyfile" />
+		</apply>
+	</target>
+
+	<!-- Delete all compiled files. -->
+	<target name="clean">
+		<delete dir="${dir.runtime}"/>
+		<delete dir="${dir.class}"/>
+		<delete file="${dir.jar}/${name.jar.main}"/>
+		<delete dir="${extentionsRepositoryDirName}"/>
+		<delete dir="doc/doxygen"/>
+	</target>
+	
+	<!-- Build distribution. -->
+	<target name="dist" depends="all">
+		<delete dir="${dir.class}"/>
+		<delete dir="doc/doxygen"/>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- Main JAR                                                                       -->
+	<!-- ############################################################################## -->
+
+	<target name="dbview" depends="build,fk,input-adaptor,output-adaptor">
+		<!-- Note that the "javac" task does not support <fileset>. -->
+		<javac includeantruntime="false" classpathref="classpath" srcdir="${dir.src}" destdir="${dir.class}">
+			<patternset refid="src.dbview"/>
+			<compilerarg value="-Xlint:unchecked"/>
+    	</javac>
+		<!-- Note that <fileset> contains the top directory. Do *NOT* set the attribute "srcdir". -->
+		<jar destfile="${dir.jar}/${name.jar.main}">
+			<fileset refid="class.dbview" />
+		</jar>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- Foreign key matchers JAR                                                       -->
+	<!-- ############################################################################## -->
+
+	<target name="fk" depends="build,show-classpath">
+		<!-- Note that the "javac" task does not support <fileset>. -->
+		<javac classpathref="classpath" includeantruntime="false" srcdir="${dir.src}" destdir="${dir.class}">
+			<patternset refid="src.fk" />
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<!-- Note that <fileset> contains the top directory. Do *NOT* set the attribute "srcdir". -->
+		<!-- __CONFPROP__ -->
+		<jar destfile="${extentionsRepositoryDirName}/${sotfForeignKeyDetectors}">
+			<fileset refid="class.fk" />
+		</jar>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- Input adaptor JAR.                                                             -->
+	<!-- ############################################################################## -->
+
+	<target name="input-adaptor" depends="build,show-classpath">
+		<!-- Note that the "javac" task does not support <fileset>. -->
+		<javac classpathref="classpath" includeantruntime="false" srcdir="${dir.src}" destdir="${dir.class}">
+			<patternset refid="src.input.adaptor" />
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<!-- Note that <fileset> contains the top directory. Do *NOT* set the attribute "srcdir". -->
+		<!-- __CONFPROP__ -->
+		<jar destfile="${extentionsRepositoryDirName}/${inputAddons}">
+			<fileset refid="class.input.adaptor" />
+		</jar>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- Output adaptor JAR.                                                            -->
+	<!-- ############################################################################## -->
+
+	<target name="output-adaptor" depends="build,show-classpath">
+		<!-- Note that the "javac" task does not support <fileset>. -->
+		<javac classpathref="classpath" includeantruntime="false" srcdir="${dir.src}" destdir="${dir.class}">
+			<patternset refid="src.output.adaptor" />
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<!-- Note that <fileset> contains the top directory. Do *NOT* set the attribute "srcdir". -->
+		<!-- __CONFPROP__ -->
+		<jar destfile="${extentionsRepositoryDirName}/${outputTableAddons}">
+			<fileset refid="class.output.adaptor" />
+		</jar>
+	</target>
+
+	<!-- ############################################################################## -->
+	<!-- JUNIT tests JAR                                                                -->
+	<!-- ############################################################################## -->
+
+	<!-- Build JUNIT tests suite. -->
+	<target name="test" depends="dbview,show-classpath">
+		<!-- Note that the "javac" task does not support <fileset>. -->
+		<javac classpathref="classpath" includeantruntime="false" srcdir="${dir.src}" destdir="${dir.class}">
+			<patternset refid="src.tests" />
+			<compilerarg value="-Xlint:unchecked"/>
+		</javac>
+		<!-- Note that <fileset> contains the top directory. Do *NOT* set the attribute "srcdir". -->
+		<jar destfile="${dir.runtime}/${name.jar.junit}">
+			<fileset refid="class.tests" />
+		</jar>
+	</target>
+
+	<!-- Run all JUNIT tests. -->
+	<target name="testall" depends="test,show-classpath">
+		<java classpathref="classpath" classname="org.junit.runner.JUnitCore">
+			<classpath>
+				<pathelement location="${dir.runtime}/${name.jar.junit}"/>
+			</classpath>
+
+			<arg value="tests.TestJunit"/>
+			<arg value="tests.TestJGraphT"/>
+			<arg value="tests.TestStructure"/>
+			<arg value="tests.TestJdbc"/>
+			<arg value="tests.TestClassLoading"/>
+			<arg value="tests.TestJavaVm"/>
+			<arg value="tests.TestConf"/>
+			<arg value="tests.TestProfilesRepository"/>
+			<arg value="tests.TestCatalog"/>
+			<arg value="tests.TestXpath"/>
+			<arg value="tests.TestConfiguration"/>
+			<arg value="tests.TestLoader"/>
+			<arg value="tests.TestArgs4J"/>
+			<arg value="tests.TestStrings"/>
+			<arg value="tests.TestFkCatalog"/>
+
+		</java>
+	</target>
+
+	<!--
+
+	java -classpath /Users/denisbeurive/Desktop/mysql-graphviz/lib/dbview.jar:/Users/denisbeurive/Desktop/mysql-graphviz/extensions/fk.jar:/Users/denisbeurive/Desktop/mysql-graphviz/extensions:/Users/denisbeurive/Desktop/mysql-graphviz/lib/jdom-1.1.2.jar:/Users/denisbeurive/Desktop/mysql-graphviz/lib/junit-4.10.jar:/Users/denisbeurive/Desktop/mysql-graphviz/lib/jgrapht-jdk1.6.jar:/Users/denisbeurive/Desktop/mysql-graphviz/lib/mysql-connector-java-5.1.18-bin.jar:runtime/junit.jar  org.junit.runner.JUnitCore tests.TestClassLoader
+
+	-->
+
+</project>

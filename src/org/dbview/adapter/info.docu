@@ -1,0 +1,19 @@
+
+/**
+ * @package org.dbtools.adapter
+ *
+ * <p>This package contains base classes for add-ons' adapters.</p>
+ *
+ * <p>An add-on may be a data source loader (for mysql, postgresql, oracle,...), or an output writer (for GraphViz...).</p>
+ *
+ * <p>Add-ons contain a list of pre-defined adaptors.<p>
+ * <ul>
+ *    <li>All data source loaders contain the same set of add-ons.</li>
+ *    <li>All output writers contain the same set of add-ons.</li>
+ * </ul>
+ *
+ * @remark Output writers are divided into groups. Currently, there is only one defined group:
+ *         Output writers that produce representations of relations between tables.
+ *         But it is possible to create new groups.
+ *         For example, we could create a new type of output writers that produce representations on joins (between fields).
+ */

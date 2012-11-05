@@ -1,0 +1,57 @@
+==General description==
+
+DbView generates representations of databases.
+
+Currently, DbView provides 3 representations:
+
+* A low detailed representation designed for GraphViz.
+* A moderately detailed representation designed for GraphViz.
+* A highly detailed representation designed for GraphViz.
+
+DbView provides functionalities designed to ease the exploitation of large databases:
+
+* Possibility to zoom around a given set of tables.
+* Possibility to calculate the path(s) between two tables.
+
+Also, if you work on a large number of databases, DbView includes a way to manage databases' profiles. Profiles act as shortcuts when you need to designate an input database. Instead of providing a long list of parameters, you only have to provide the name of a profile. This saves times and avoid errors.
+
+Please note that DBVIEW is a command line tool.
+
+==Requirement==
+
+In order to use DbView, you need the following softwares:
+
+* Java 6 (available for Windows, Mac OS, linux).
+* GraphViz (available for Windows, Mac OS, linux).
+
+See the online documentation : http://beurive.com/dbview_requirement.html
+
+==Installation==
+
+DbView does not need any specific installation procedure. Just unizp the archive in the directory you want to install it.
+
+See the online documentation : http://beurive.com/dbview_installation.html
+
+==Usage==
+
+DBVIEW is a command line tool.
+
+See the online documentation : http://beurive.com/dbview.html
+
+==JavaDoc==
+
+You can browse the JavaDoc online: http://beurive.com/data/dbview/index.html
+
+You can also generate the JavaDoc yourself. You need "ant" and "doxygen" : ant doc
+
+==Author==
+
+Denis BEURIVE
+
+==Licence==
+
+GPL
+
+
+
+

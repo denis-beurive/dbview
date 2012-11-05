@@ -1,0 +1,22 @@
+
+/**
+ * @package org.dbtools.addons
+ *
+ * <p>This package contains the add-ons' catalogue implementation.</p>
+ * <p>Main functionalities:</p>
+ * <ul>
+ *   <li>The catalogue makes an inventory of all available add-ons, in a given JAR.</li>
+ *   <li>Given the name of an add-on, it returns an instance of the add-on.</li>
+ * </ul>
+ *
+ * Please note that there are two main kinds of add-ons:
+ * <ul>
+ *    <li>Input add-ons.</li>
+ *    <li>Output add-ons.</li>
+ * </ul>
+ * 
+ * Output add-ons are divided into categories. Currently, we define the following categories:
+ * <ul>
+ *    <li>Add-ons used to represent tables (and relations between tables).</li>
+ * </ul>
+ */

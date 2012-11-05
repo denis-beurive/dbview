@@ -1,0 +1,6 @@
+
+/**
+ * @package org.dbtools.addons.output.utils.dot
+ * This package regroups some utilities used by all add-ons that produce DOT (GraphViz) representations.
+ * @see http://www.graphviz.org/
+ */

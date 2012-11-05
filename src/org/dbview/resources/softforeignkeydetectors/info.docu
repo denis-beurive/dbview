@@ -1,0 +1,6 @@
+/**
+ * @package org.dbtools.resources.softforeignkeydetectors
+ * This package contains all soft foreign key detectors.
+ * A soft foreign key is a foreign key only defined by its name.
+ * No constraint is defined in the database.
+ */

@@ -1,0 +1,5 @@
+/**
+ * @package org.dbtools.databaseExporters.dot
+ * This package contains exporters' engines for GraphViz.
+ * An exporter produces a textual representation of a given set of tables, in a given database.
+ */

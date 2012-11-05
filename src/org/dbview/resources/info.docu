@@ -1,0 +1,4 @@
+/**
+ * @package org.dbtools.resources
+ * This package contains base classes and tools for resources' management. Right now, there is only one declared resource: Soft foreign key detector.
+ */

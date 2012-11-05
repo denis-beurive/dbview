@@ -1,0 +1,4 @@
+/**
+ * @package org.dbtools.utils.dot.label
+ * This package contains tools used to create grids inside DOT's nodes.
+ */

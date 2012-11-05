@@ -1,0 +1,4 @@
+/**
+ * @package org.dbtools.utils.dot
+ * This package contains a basic implementation of a JAVA interface to DOT.
+ */

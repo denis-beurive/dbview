@@ -1,0 +1,5 @@
+/**
+ * @package org.dbtools.runtime.cli
+ * This package contains the code used to parse the command line.
+ * Please note that parts of the parsing are done by specific adaptors.
+ */
